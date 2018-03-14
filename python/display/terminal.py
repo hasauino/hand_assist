@@ -26,8 +26,21 @@ def main():
             term = terminal(device)
             term.println("HandAssist V3.1")
             term.println("UAEU, IRI Lab")
-
-
+            time.sleep(2)
+            term.puts("Connecting ...")
+            while True:
+				term.puts("|")
+				time.sleep(0.5)
+				term.backspace()
+				term.puts("/")
+				time.sleep(0.5)
+				term.backspace()
+				term.puts("-")
+				time.sleep(0.5)
+				term.backspace()
+				term.puts("\\")
+				time.sleep(0.5)
+				term.backspace()
 
 if __name__ == "__main__":
     try:
