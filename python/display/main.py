@@ -2,10 +2,7 @@
 
 import threading
 from gui import Gui
-
-
-
-
+ 
 
 gui=Gui()
 

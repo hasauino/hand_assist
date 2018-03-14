@@ -9,6 +9,8 @@ import logging
 from luma.core import cmdline, error
 from pythonwifi.iwlibs import Wireless
 
+#SSID='handAssist'
+SSID='Jose Lab'
 
 
 def get_device(actual_args=None):
@@ -42,14 +44,14 @@ class Gui (threading.Thread):
 		threading.Thread.__init__(self)
 		self.device = get_device()
 	def run(self):
-		while True:
+		while False:
 				term = terminal(self.device)
 				term.println("HandAssist V3.1")
 				term.println("UAEU, IRI Lab")
 				time.sleep(2)
 				wifi=Wireless('wlan0')
 				term.puts("Connecting ...")
-				while wifi.getEssid()!='handAssist':
+				while wifi.getEssid()!=SSID:
 					term.puts("|")
 					time.sleep(0.5)
 					term.backspace()
