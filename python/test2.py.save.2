@@ -14,30 +14,14 @@ s.connect((TCP_IP, TCP_PORT))
 s.send('s')
 
 def on_press(key):
-	print key
-
-	if key==key.space:
-		s.send('s')
-	elif key==key.up:
-		s.send('f')
-	elif key==key.down:
-		s.send('b')
-	elif key==key.esc:
-		s.close()
-		return False
+    
+print key
+    if key==key.up:
+	s.
+			
+			
 def on_release(key):
 	print key
-
-        if key==key.space:
-                s.send('s')
-        elif key==key.up:
-                s.send('f')
-        elif key==key.down:
-                s.send('b')
-	elif key==key.esc:
-                s.close()
-                return False
-
 
 # Collect events until released
 with keyboard.Listener(
