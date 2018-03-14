@@ -45,7 +45,6 @@ class Gui (threading.Thread):
 		threading.Thread.__init__(self)
 		self.device = get_device()
 	def run(self):
-		while True:
 				term = terminal(self.device)
 				term.println("HandAssist V3.1")
 				term.println("UAEU, IRI Lab")
@@ -70,6 +69,5 @@ class Gui (threading.Thread):
 				term.println("Connected!")
 				term.println(get_ip())
 				time.sleep(0.5)
-				while True:
-					pass
+
 						

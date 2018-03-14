@@ -21,15 +21,25 @@ BUFFER_SIZE = 1024
 
 wifi=Wireless('wlan0')
 
+
+
+cond=True
+
 gui=Gui()
 gui.start()
 
+sleep(5)
+
 while wifi.getEssid()!=SSID:
+	call(['sudo', 'ifconfig' ,'wlan0', 'down'])
+	sleep(1)
+	call(['sudo', 'ifconfig' ,'wlan0', 'up'])
+	sleep(5)
 	pass
 
-while get_ip()=='':
-	pass
-	
+
+sleep(5)
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TCP_IP, TCP_PORT))
 sleep(0.1)
@@ -48,8 +58,9 @@ def callback1(pin):
 	
 def callback2(pin):
 	s.send('f')
-	print "hi"
 	sleep(DEBOUNCE_TIME)
+
+
 	
 def callback3(pin):
 	call(['sudo', 'shutdown','-P','now'])
@@ -60,22 +71,34 @@ def callback4(pin):
 	sleep(DEBOUNCE_TIME)
 	
 def callback5(pin):
-	print pin
-	sleep(DEBOUNCE_TIME)
+    global cond
+    cond=False
+    sleep(DEBOUNCE_TIME)
 	
 def callback6(pin):
-	s.send('b')
-	sleep(DEBOUNCE_TIME)
+    s.send('b')
+    sleep(DEBOUNCE_TIME)
+
+
+            
+	
 
 sleep(1)	
-GPIO.add_event_detect(pins[1], GPIO.BOTH, callback=callback1)
-GPIO.add_event_detect(pins[2], GPIO.BOTH, callback=callback2)
-GPIO.add_event_detect(pins[3], GPIO.BOTH, callback=callback3)
-GPIO.add_event_detect(pins[4], GPIO.BOTH, callback=callback4)
-GPIO.add_event_detect(pins[5], GPIO.BOTH, callback=callback5)
-GPIO.add_event_detect(pins[6], GPIO.BOTH, callback=callback6)
+GPIO.add_event_detect(pins[1], GPIO.FALLING, callback=callback1)
+
+GPIO.add_event_detect(pins[2], GPIO.FALLING, callback=callback2)
 
 
+GPIO.add_event_detect(pins[3], GPIO.FALLING, callback=callback3)
+GPIO.add_event_detect(pins[4], GPIO.FALLING, callback=callback4)
+GPIO.add_event_detect(pins[5], GPIO.FALLING, callback=callback5)
+
+GPIO.add_event_detect(pins[6], GPIO.FALLING, callback=callback6)
+
+
+
+while cond==True:
+    pass
 
 
 
