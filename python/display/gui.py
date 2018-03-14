@@ -7,7 +7,7 @@ from luma.core.virtual import terminal
 import sys
 import logging
 from luma.core import cmdline, error
-
+from pythonwifi.iwlibs import Wireless
 
 
 
@@ -47,8 +47,9 @@ class Gui (threading.Thread):
 				term.println("HandAssist V3.1")
 				term.println("UAEU, IRI Lab")
 				time.sleep(2)
+				wifi=Wireless('wlan0')
 				term.puts("Connecting ...")
-				while True:
+				while wifi.getEssid()!='handAssist':
 					term.puts("|")
 					time.sleep(0.5)
 					term.backspace()
@@ -61,3 +62,10 @@ class Gui (threading.Thread):
 					term.puts("\\")
 					time.sleep(0.5)
 					term.backspace()
+				term.clear()
+				time.sleep(0.5)
+				term.println("Connected!")
+				time.sleep(0.5)
+				while True:
+						pass
+						
