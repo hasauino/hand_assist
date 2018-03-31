@@ -8,9 +8,10 @@ import sys
 import logging
 from luma.core import cmdline, error
 from pythonwifi.iwlibs import Wireless
-
-#SSID='handAssist'
-SSID='Jose Lab'
+from subprocess import call
+from functions import get_ip
+SSID='handAssist'
+#SSID='Jose Lab'
 
 
 def get_device(actual_args=None):
@@ -44,7 +45,7 @@ class Gui (threading.Thread):
 		threading.Thread.__init__(self)
 		self.device = get_device()
 	def run(self):
-		while False:
+		while True:
 				term = terminal(self.device)
 				term.println("HandAssist V3.1")
 				term.println("UAEU, IRI Lab")
@@ -67,7 +68,8 @@ class Gui (threading.Thread):
 				term.clear()
 				time.sleep(0.5)
 				term.println("Connected!")
+				term.println(get_ip())
 				time.sleep(0.5)
 				while True:
-						pass
+					pass
 						
