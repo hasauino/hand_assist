@@ -3,7 +3,7 @@
 import threading
 from gui import Gui
 import RPi.GPIO as GPIO
-from time import sleep
+from time import sleep,time
 import socket
 from pythonwifi.iwlibs import Wireless
 from functions import get_ip
@@ -18,7 +18,8 @@ DEBOUNCE_TIME=0.2
 TCP_IP = '192.168.1.10'
 TCP_PORT = 80
 BUFFER_SIZE = 1024
-
+SHUTTING_DOWN_TIME=2
+REBOOT_TIME=1
 wifi=Wireless('wlan0')
 
 
@@ -30,20 +31,31 @@ gui.start()
 
 sleep(5)
 
-while wifi.getEssid()!=SSID:
+
+
+def reconnect():
 	call(['sudo', 'ifconfig' ,'wlan0', 'down'])
 	sleep(1)
 	call(['sudo', 'ifconfig' ,'wlan0', 'up'])
 	sleep(5)
-	pass
+
+class empty():
+	def send(self,char):
+		print "could not send data, please check connection"
 
 
 sleep(5)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((TCP_IP, TCP_PORT))
-sleep(0.1)
-s.send('s')
+if wifi.getEssid()==SSID:
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.connect((TCP_IP, TCP_PORT))
+	sleep(0.1)
+	s.send('s')
+else:
+	s=empty()
+
+
+
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -53,8 +65,21 @@ for pin in pins.values():
 	
 	
 def callback1(pin):
-	call(['sudo', 'reboot'])
+	#call(['sudo', 'reboot'])
+	global cond
+	t0=time()
 	sleep(DEBOUNCE_TIME)
+
+	dt=0
+	while GPIO.input(pin)==0:
+		dt=time()-t0
+
+		if dt>SHUTTING_DOWN_TIME:
+			print "shutting down.."
+			break
+			call(['sudo', 'shutdown','-P','now'])
+	cond=False
+
 	
 def callback2(pin):
 	s.send('f')
@@ -63,17 +88,36 @@ def callback2(pin):
 
 	
 def callback3(pin):
-	call(['sudo', 'shutdown','-P','now'])
+	t0=time()
 	sleep(DEBOUNCE_TIME)
+
+	dt=0
+	while GPIO.input(pin)==0:
+		dt=time()-t0
+
+		if dt>REBOOT_TIME:
+			print "rebooting.."
+			break
+			call(['sudo', 'reboot'])
+
 	
 def callback4(pin):
 	s.send('s')
 	sleep(DEBOUNCE_TIME)
 	
 def callback5(pin):
-    global cond
-    cond=False
-    sleep(DEBOUNCE_TIME)
+	global s
+	reconnect()
+	sleep(DEBOUNCE_TIME)
+	if wifi.getEssid()==SSID:
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.connect((TCP_IP, TCP_PORT))
+		sleep(0.1)
+		s.send('s')
+	else:
+		s=empty()
+
+
 	
 def callback6(pin):
     s.send('b')
@@ -98,7 +142,8 @@ GPIO.add_event_detect(pins[6], GPIO.FALLING, callback=callback6)
 
 
 while cond==True:
-    pass
+	sleep(0.1)
+	pass
 
 
 
