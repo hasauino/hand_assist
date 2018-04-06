@@ -24,8 +24,6 @@ wifi=Wireless('wlan0')
 
 
 
-cond=True
-
 gui=Gui()
 gui.start()
 
@@ -65,20 +63,19 @@ for pin in pins.values():
 	
 	
 def callback1(pin):
-	#call(['sudo', 'reboot'])
-	global cond
 	t0=time()
 	sleep(DEBOUNCE_TIME)
-
 	dt=0
 	while GPIO.input(pin)==0:
 		dt=time()-t0
 
 		if dt>SHUTTING_DOWN_TIME:
 			print "shutting down.."
-			break
 			call(['sudo', 'shutdown','-P','now'])
-	cond=False
+			break
+	call(['sudo', 'killall','python'])
+
+
 
 	
 def callback2(pin):
@@ -109,11 +106,18 @@ def callback5(pin):
 	global s
 	reconnect()
 	sleep(DEBOUNCE_TIME)
+	print 'hi'
 	if wifi.getEssid()==SSID:
-		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.connect((TCP_IP, TCP_PORT))
+		print 'hihi'
+		try:
+			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			s.connect((TCP_IP, TCP_PORT))
+		except:
+			print "no"
 		sleep(0.1)
+		s=empty()
 		s.send('s')
+		
 	else:
 		s=empty()
 
@@ -141,7 +145,7 @@ GPIO.add_event_detect(pins[6], GPIO.FALLING, callback=callback6)
 
 
 
-while cond==True:
+while True:
 	sleep(0.1)
 	pass
 

