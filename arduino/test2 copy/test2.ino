@@ -4,8 +4,8 @@
 #define m1_b 5
 #define m2_a 6
 #define m2_b 9
-#define m3_a 11
-#define m3_b 10
+#define m3_a 10
+#define m3_b 11
 #define FWD 1
 #define BWD 0
 #define SRX 8
