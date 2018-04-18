@@ -12,39 +12,38 @@ s.connect((TCP_IP, TCP_PORT))
 s.send('s')
 
 def on_press(key):
-	print key
+	
+	try:
+		if key.char=='u':
+			s.send('u')
+		elif key.char=='j':
+			s.send('j')
+		elif key.char=='i':
+			s.send('i')
+		elif key.char=='k':
+			s.send('k')
+		elif key.char=='o':
+			s.send('o')
+		elif key.char=='l':
+			s.send('l')
 
-	if key==key.space:
-		s.send('s')
-	elif key==key.up:
-		s.send('f')
-	elif key==key.down:
-		s.send('b')
-	elif key==key.esc:
-		s.close()
-		return False
+	except AttributeError:
+		if key==key.space:
+			s.send('s')
+		elif key==key.up:
+			s.send('f')
+		elif key==key.down:
+			s.send('b')
+		elif key==key.esc:
+			s.close()
+			return False
     
     
 def on_release(key):
 	print key
 
-        if key==key.space:
-                s.send('s')
-        elif key==key.up:
-                s.send('f')
-        elif key==key.down:
-                s.send('b')
-	elif key==key.esc:
-                s.close()
-                return False
-
 
 # Collect events until released
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-    sleep(5)
-
-with keyboard.Listener(
-        on_press=on_press,
-        on_release=on_release) as listener:
-        listener.join()
+	listener.join()
 

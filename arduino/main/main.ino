@@ -1,11 +1,11 @@
 #include <SoftwareSerial.h>
 //pins assignment
-#define m1_a 3
-#define m1_b 5
-#define m2_a 6
-#define m2_b 9
-#define m3_a 10
-#define m3_b 11
+#define m1_b 3
+#define m1_a 5
+#define m2_b 6
+#define m2_a 9
+#define m3_a 11
+#define m3_b 10
 #define FWD 1
 #define BWD 0
 #define SRX 8
@@ -87,7 +87,43 @@ switch(rec){
       motor(3,0);
       blink(RED);
       break; 
-  
+
+    case 'u':
+      motor(3,255);
+      blink(RED);
+      break; 
+
+       case 'j':
+      motor(3,-255);
+      blink(RED);
+      break; 
+
+
+    case 'i':
+      motor(2,255);
+      blink(RED);
+      break; 
+
+       case 'k':
+      motor(2,-255);
+      blink(RED);
+      break; 
+
+
+
+
+    case 'o':
+      motor(1,255);
+      blink(RED);
+      break; 
+
+       case 'l':
+      motor(1,-255);
+      blink(RED);
+      break; 
+
+
+      
   }//switch
   
   }
