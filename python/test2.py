@@ -40,12 +40,11 @@ def on_release(key):
 
 
 # Collect events until released
-<<<<<<< HEAD
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
     sleep(5)
-=======
+
 with keyboard.Listener(
         on_press=on_press,
         on_release=on_release) as listener:
         listener.join()
->>>>>>> 72458d149afd5835bb518d1675ed06748857bc45
+
