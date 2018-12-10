@@ -15,9 +15,12 @@ Computer <-- Hardware serial --> Arduino Nano (main controller) <--  Soft Serial
 
 ## Serial data (sent to computer on hardware serial) framing details:
 - Data are sent as follows:
-<123> <55> <position1[0]> <position1[1]> <position1[2]> <position1[3]> ... <position3[0]> <position3[1]> <position3[2]> <position3[3]>
+```
+<123> <55> <pos1[0]> <pos1[1]> <pos1[2]> <pos1[3]> ... <pos3[0]> <pos3[1]> <pos3[2]> <pos3[3]>
+```
+- total message length is 16 bytes. The first two are framing bytes indicating the start of the message.
 
-where position1[0]..position1[3] are the bytes that represents a float value of position1 (motor 1 position) (IEEE-754 floating point represnetation). position1[0] is the loaest byte, position1[3] is the highest byte.
+where pos1[0]..pos1[3] are the bytes that represents a float value of pos1 (motor 1 position) (IEEE-754 floating point represnetation). pos1[0] is the lowest byte, pos1[3] is the highest byte.
 
 - Example for reading the serial message using Python:
 ```Python
