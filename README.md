@@ -69,14 +69,13 @@ The following table shows what each charater does:
 import serial
 
 ser = serial.Serial('/dev/ttyUSB0',115200)  # open serial port
-ser.write('b')
+ser.write('s') #stops all motors
 
 ser.close()             # close port
 ```
 
 - Python UDP client example: 
 ```Python
-# send a 's' charachter to the hand. Will cause all motors to stop.
 import socket
 
 UDP_IP = "192.168.1.10"
@@ -84,7 +83,7 @@ UDP_PORT = 80
 
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
-sock.sendto('s', (UDP_IP, UDP_PORT))
+sock.sendto('s', (UDP_IP, UDP_PORT)) #stops all motors
 
 
 ```
