@@ -34,7 +34,7 @@ position 1 = 50.244 mm
 position 2 = 51.808 mm
 position 3=  53.959 mm
 ```
-
+- There is a software limit applied on the motor. It can only move between a 20 mm to 90 mm
 - total message length is 14 bytes. The first two are framing bytes indicating the start of the message.
 
 where pos1[0]..pos1[3] are the bytes that represents a float value of pos1 (motor 1 position) (IEEE-754 floating point represnetation). pos1[0] is the lowest byte, pos1[3] is the highest byte.
