@@ -20,7 +20,9 @@ You can also read feedback data which the device sends every 33 ms (30 Hz).
 ## Serial details:
 - BaudRate: 115200
 
-## Serial data (sent to computer on hardware serial) framing details:
+## Reading data from HandAssist device
+- Device sends data over USB (a USB COM port on the computer).
+- Data sent from device are 3 floats which are the poistion of each motor.
 - Data are sent as follows:
 ```
 123 55 <pos1[0]> <pos1[1]> <pos1[2]> <pos1[3]> ... <pos3[0]> <pos3[1]> <pos3[2]> <pos3[3]>
