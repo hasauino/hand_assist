@@ -23,16 +23,18 @@ You can also read feedback data which the device sends every 33 ms (30 Hz).
 ```
 123 55 <pos1[0]> <pos1[1]> <pos1[2]> <pos1[3]> ... <pos3[0]> <pos3[1]> <pos3[2]> <pos3[3]>
 ```
+- Example message:
+```
+123 55 62 250 72 66 206 59 79 66 246 213 87 66
+```
+
 which corresponds to:
 ```
 position 1 = 50.244
 position 2 = 51.808
 position 3=  53.959
 ```
-- Example message:
-```
-123 55 62 250 72 66 206 59 79 66 246 213 87 66
-```
+
 - total message length is 14 bytes. The first two are framing bytes indicating the start of the message.
 
 where pos1[0]..pos1[3] are the bytes that represents a float value of pos1 (motor 1 position) (IEEE-754 floating point represnetation). pos1[0] is the lowest byte, pos1[3] is the highest byte.
