@@ -42,3 +42,14 @@ A UDP client can control the hand by sending characters (1 byte). The following 
 | 'z'           |       stop  motor 3                  |
 
 - Python UDP client example: 
+```Python
+# send a 's' charachter to the hand. Will cause all motors to stop.
+import socket
+
+UDP_IP = "192.168.1.10"
+UDP_PORT = 80
+
+sock = socket.socket(socket.AF_INET, # Internet
+                     socket.SOCK_DGRAM) # UDP
+sock.sendto('s', (UDP_IP, UDP_PORT))
+```
