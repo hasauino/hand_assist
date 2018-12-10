@@ -66,17 +66,12 @@ The following table shows what each charater does:
 
 - Python example, sending commands using Serial port: 
 ```Python
-# send a 's' charachter to the hand. Will cause all motors to stop.
-import socket
+import serial
 
-UDP_IP = "192.168.1.10"
-UDP_PORT = 80
+ser = serial.Serial('/dev/ttyUSB0',115200)  # open serial port
+ser.write('b')
 
-sock = socket.socket(socket.AF_INET, # Internet
-                     socket.SOCK_DGRAM) # UDP
-sock.sendto('s', (UDP_IP, UDP_PORT))
-
-
+ser.close()             # close port
 ```
 
 - Python UDP client example: 
