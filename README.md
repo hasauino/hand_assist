@@ -13,18 +13,44 @@ Computer <-- Hardware serial --> Arduino Nano (main controller) <--  Soft Serial
 ## Hardware and Soft serial details:
 - BaudRate: 115200
 
-## Serial data (sent to computer on hardware serial) details:
-```C++
-Serial.print(motorPosition[0]);Serial.print(",");
-Serial.print(motorPosition[1]);Serial.print(",");
-Serial.print(motorPosition[2]);Serial.print(",");
-Serial.println();
+## Serial data (sent to computer on hardware serial) framing details:
+- Data are sent as follows:
 ```
-motorPosition[i]: is a float
+<123> <55> <pos1[0]> <pos1[1]> <pos1[2]> <pos1[3]> ... <pos3[0]> <pos3[1]> <pos3[2]> <pos3[3]>
+```
+- total message length is 16 bytes. The first two are framing bytes indicating the start of the message.
+
+where pos1[0]..pos1[3] are the bytes that represents a float value of pos1 (motor 1 position) (IEEE-754 floating point represnetation). pos1[0] is the lowest byte, pos1[3] is the highest byte.
+
+- Example for reading the serial message using Python:
+```Python
+import serial
+import struct
+
+ser = serial.Serial('/dev/ttyUSB0',115200)  # open serial port
+data=[]
+
+while True:
+    if(ord(ser.read(1))==123):
+        if(ord(ser.read(1))==55):
+            for i in range(0,12):
+                data.append(    ord(ser.read(1) ))
+            #convert bytes to floats (12 bytes to 3 floats)
+            m1=struct.unpack('f',bytearray(data[0:4]))
+            m2=struct.unpack('f',bytearray(data[4:8]))
+            m3=struct.unpack('f',bytearray(data[8:12]))
+            print m1,',',m2,',',m3
+            data=[]
 
 
-## UDP commands details:
-A UDP client can control the hand by sending characters (1 byte). The following table shows what each charater does:
+ser.close()             # close port
+```
+
+
+
+## Command details:
+The device can be controlled using either UDP connection, or from the serial port. To control the device, send a character on the serial port, or send the characted on the UDP port (examples are below).
+The following table shows what each charater does:
 
 | character     | Action                               |
 | ------------- | ------------------------------------ |
@@ -41,9 +67,18 @@ A UDP client can control the hand by sending characters (1 byte). The following 
 | 'x'           |       stop  motor 2                  |
 | 'z'           |       stop  motor 3                  |
 
+- Python example, sending commands using Serial port: 
+```Python
+import serial
+
+ser = serial.Serial('/dev/ttyUSB0',115200)  # open serial port
+ser.write('s') #stops all motors
+
+ser.close()             # close port
+```
+
 - Python UDP client example: 
 ```Python
-# send a 's' charachter to the hand. Will cause all motors to stop.
 import socket
 
 UDP_IP = "192.168.1.10"
@@ -51,5 +86,7 @@ UDP_PORT = 80
 
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
-sock.sendto('s', (UDP_IP, UDP_PORT))
+sock.sendto('s', (UDP_IP, UDP_PORT)) #stops all motors
+
+
 ```
