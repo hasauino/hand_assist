@@ -14,12 +14,12 @@ Computer <-- Hardware serial --> Arduino Nano (main controller) <--  Soft Serial
 - BaudRate: 115200
 
 ## Serial data (sent to computer on hardware serial) details:
-
+```C++
 Serial.print(motorPosition[0]);Serial.print(",");
 Serial.print(motorPosition[1]);Serial.print(",");
 Serial.print(motorPosition[2]);Serial.print(",");
 Serial.println();
-
+```
 motorPosition[i]: is a float
 
 
