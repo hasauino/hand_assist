@@ -13,14 +13,36 @@ Computer <-- Hardware serial --> Arduino Nano (main controller) <--  Soft Serial
 ## Hardware and Soft serial details:
 - BaudRate: 115200
 
-## Serial data (sent to computer on hardware serial) details:
-```C++
-Serial.print(motorPosition[0]);Serial.print(",");
-Serial.print(motorPosition[1]);Serial.print(",");
-Serial.print(motorPosition[2]);Serial.print(",");
-Serial.println();
+## Serial data (sent to computer on hardware serial) framing details:
+- Data are sent as follows:
+<123> <55> <position1[0]> <position1[1]> <position1[2]> <position1[3]> ... <position3[0]> <position3[1]> <position3[2]> <position3[3]>
+
+where position1[0]..position1[3] are the bytes that represents a float value of position1 (motor 1 position) (IEEE-754 floating point represnetation). position1[0] is the loaest byte, position1[3] is the highest byte.
+
+- Example for reading the serial message using Python:
+```Python
+import serial
+import struct
+
+ser = serial.Serial('/dev/ttyUSB0',115200)  # open serial port
+data=[]
+
+while True:
+    if(ord(ser.read(1))==123):
+        if(ord(ser.read(1))==55):
+            for i in range(0,12):
+                data.append(    ord(ser.read(1) ))
+            #convert bytes to floats (12 bytes to 3 floats)
+            m1=struct.unpack('f',bytearray(data[0:4]))
+            m2=struct.unpack('f',bytearray(data[4:8]))
+            m3=struct.unpack('f',bytearray(data[8:12]))
+            print m1,',',m2,',',m3
+            data=[]
+
+
+ser.close()             # close port
 ```
-motorPosition[i]: is a float
+
 
 
 ## UDP commands details:
