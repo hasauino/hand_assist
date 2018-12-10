@@ -30,9 +30,9 @@ You can also read feedback data which the device sends every 33 ms (30 Hz).
 
 which corresponds to:
 ```
-position 1 = 50.244
-position 2 = 51.808
-position 3=  53.959
+position 1 = 50.244 mm
+position 2 = 51.808 mm
+position 3=  53.959 mm
 ```
 
 - total message length is 14 bytes. The first two are framing bytes indicating the start of the message.
