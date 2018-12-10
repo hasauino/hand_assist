@@ -1,0 +1,183 @@
+{
+    "manifest": {
+        "displayName": "Hand Assist",
+        "invocationName": "Hand Assist",
+        "category": "PRODUCTIVITY"
+    },
+    "actions": [
+        {
+            "name": "Extend Hand",
+            "intent": {
+                "name": "extend hand",
+                "parameters": [                ],
+                "trigger": {
+                    "queryPatterns": [
+                        "extend hand",
+                        "extend fingers",
+                        "extend singers",
+                        "hand extend",
+                        "han extend",
+                        "fingers extend",
+                        "hand open",
+                        "fingers open",
+                        "open fingers",
+                        "open hand",
+                        "open han",
+                        "han open",
+                        "extend han"
+                    ]
+                }
+            },
+            "fulfillment": {
+                "staticFulfillment": {
+                    "templatedResponse": {
+                        "items": [
+                            {
+                                "simpleResponse": {
+                                    "textToSpeech": "Affirmative"
+                                }
+                            },
+                            {
+                                "deviceExecution": {
+                                    "command": "Extend",
+                                     "params": {
+                                        "number": "$number"
+                                    }
+                                    
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        
+        
+        
+        
+        
+        
+                {
+            "name": "Flex Hand",
+            "intent": {
+                "name": "flex hand",
+                "parameters": [                ],
+                "trigger": {
+                    "queryPatterns": [
+                        "flex hand",
+                        "flex han",
+                        "flex fingers",
+                        "flex singers",
+                        "hand flex",
+                        "han flex",
+                        "fingers flex",
+                        "singers flex",
+                        "hand close",
+                        "fingers close",
+                        "close fingers",
+                        "close hand",
+                        "close han",
+                        "han close"
+                    ]
+                }
+            },
+            "fulfillment": {
+                "staticFulfillment": {
+                    "templatedResponse": {
+                        "items": [
+                            {
+                                "simpleResponse": {
+                                    "textToSpeech": "Affirmative"
+                                }
+                            },
+                            {
+                                "deviceExecution": {
+                                    "command": "Flex",
+                                     "params": {
+                                        "number": "$number"
+                                    }
+                                    
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        
+        
+        
+        
+                        {
+            "name": "Help",
+            "intent": {
+                "name": "help",
+                "parameters": [                ],
+                "trigger": {
+                    "queryPatterns": [
+                        "How can you help me",
+                        "help",
+                        "what can I do",
+                        "what to do",
+                        "what should I do",
+                        "how to operate",
+                        "how to",
+                        "I need help"
+                    ]
+                }
+            },
+            "fulfillment": {
+                "staticFulfillment": {
+                    "templatedResponse": {
+                        "items": [
+                            {
+                                "simpleResponse": {
+                                    "textToSpeech": "You can control your hand by saying, hand open, hand close, open fingers, close fingers, extend hand, flex fingers, and so on."
+                                }
+                            }
+
+                        ]
+                    }
+                }
+            }
+        },
+        
+        
+        
+        
+        
+        
+        
+        {
+            "name": "MAIN",
+            "intent": {
+                "name": "actions.intent.MAIN",
+                "parameters": [                ],
+                "trigger": {
+                    "queryPatterns": [
+
+                    ]
+                }
+            },
+            "fulfillment": {
+                "staticFulfillment": {
+                    "templatedResponse": {
+                        "items": [
+                            {
+                                "simpleResponse": {
+                                    "textToSpeech": "Welcome to CHE, your smart hand assistive device. You can control your hand by saying, hand open, hand close, open fingers, close fingers, extend hand, flex fingers, and so on."
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+        
+        
+        
+        
+        
+        
+    ]
+}

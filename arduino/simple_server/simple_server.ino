@@ -1,3 +1,8 @@
+/*
+This code is to be executed on ESP12 wifi module 
+connected to the Arduino of the hand assistive device
+*/
+
 #include <ESP8266WiFi.h>
 
 #define ssid "handAssist"
@@ -14,16 +19,19 @@ void setup()
   Serial.begin(115200);
   Serial.println();
   WiFi.softAPConfig (local_IP, gateway, subnet);
-  WiFi.softAP(ssid,password,1,true);
+  WiFi.softAP(ssid,password,1,false);//SSID,Pass,channelNo.,hidden or shown 
 
   delay(1000);
   server.begin();
   server.setNoDelay(true);
 
+
 }
 
 void loop()
 {
+ 
+
   WiFiClient client = server.available();
  
   

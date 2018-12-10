@@ -12,7 +12,6 @@ s.connect((TCP_IP, TCP_PORT))
 s.send('s')
 
 def on_press(key):
-	
 	try:
 		if key.char=='u':
 			s.send('u')
