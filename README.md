@@ -21,7 +21,7 @@ You can also read feedback data which the device sends every 33 ms (30 Hz).
 ## Serial data (sent to computer on hardware serial) framing details:
 - Data are sent as follows:
 ```
-<123> <55> <pos1[0]> <pos1[1]> <pos1[2]> <pos1[3]> ... <pos3[0]> <pos3[1]> <pos3[2]> <pos3[3]>
+123 55 <pos1[0]> <pos1[1]> <pos1[2]> <pos1[3]> ... <pos3[0]> <pos3[1]> <pos3[2]> <pos3[3]>
 ```
 - total message length is 16 bytes. The first two are framing bytes indicating the start of the message.
 
