@@ -2,7 +2,7 @@
 - The handAssist device has an Arduino Nano, and an ESP8266 WiFi module.
 - The WiFi module creats a WiFi access point and acts as a UDP server.
 - The device can be connected to a computer using USB. You can write command data on the USB COM port to control the device. 
-and you can read feedback data.
+You can also read feedback data which the device sends every 33 ms (30 Hz).
 - The device can also be controlled wirelessly using socket UDP connection.
 _ The UDP interface is only for controlling the device. The device only listens but does not send data over this interface.
 
