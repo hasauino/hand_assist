@@ -62,6 +62,13 @@ void setup(){
   }
 
 char status1,status2,status3;
+
+union {
+    float fval;
+    byte bval[4];
+} floatAsBytes;
+
+
 void loop(){
 
 motorPosition[0]=position(feedback_m1);
@@ -81,16 +88,19 @@ if(   (millis()-t)>rec_blink_delay ){RGB(LOW,LOW,LOW);}
 
  
 if((millis()-t_printing)>(1000.0/RATE)){
-
-Serial.print(motorPosition[0]);Serial.print(",");
-Serial.print(motorPosition[1]);Serial.print(",");
-Serial.print(motorPosition[2]);Serial.print(",");
-Serial.println();
+Serial.write(123);
+Serial.write(55);
+for(int i=0;i<3;i++){
+  floatAsBytes.fval = motorPosition[i];
+  for(int j=0;j<4;j++){
+    Serial.write(floatAsBytes.bval[j]);
+    }
+  }
 t_printing=millis();
 }
 
 int rec=SSerial.read();
-
+if (Serial.available()>0){rec=Serial.read();}
 switch(rec){
 
   case 'f':
@@ -168,6 +178,7 @@ switch(rec){
       
   }//switch
  
+  
   }
 
 
