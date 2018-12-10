@@ -33,7 +33,7 @@ position 3=  53.959
 ```
 123 55 62 250 72 66 206 59 79 66 246 213 87 66
 ```
-- total message length is 16 bytes. The first two are framing bytes indicating the start of the message.
+- total message length is 14 bytes. The first two are framing bytes indicating the start of the message.
 
 where pos1[0]..pos1[3] are the bytes that represents a float value of pos1 (motor 1 position) (IEEE-754 floating point represnetation). pos1[0] is the lowest byte, pos1[3] is the highest byte.
 
