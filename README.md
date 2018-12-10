@@ -45,8 +45,9 @@ ser.close()             # close port
 
 
 
-## UDP commands details:
-A UDP client can control the hand by sending characters (1 byte). The following table shows what each charater does:
+## Command details:
+The device can be controlled using either UDP connection, or from the serial port. To control the device, send a character on the serial port, or send the characted on the UDP port (examples are below).
+The following table shows what each charater does:
 
 | character     | Action                               |
 | ------------- | ------------------------------------ |
@@ -63,6 +64,21 @@ A UDP client can control the hand by sending characters (1 byte). The following 
 | 'x'           |       stop  motor 2                  |
 | 'z'           |       stop  motor 3                  |
 
+- Python example, sending commands using Serial port: 
+```Python
+# send a 's' charachter to the hand. Will cause all motors to stop.
+import socket
+
+UDP_IP = "192.168.1.10"
+UDP_PORT = 80
+
+sock = socket.socket(socket.AF_INET, # Internet
+                     socket.SOCK_DGRAM) # UDP
+sock.sendto('s', (UDP_IP, UDP_PORT))
+
+
+```
+
 - Python UDP client example: 
 ```Python
 # send a 's' charachter to the hand. Will cause all motors to stop.
@@ -74,4 +90,6 @@ UDP_PORT = 80
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 sock.sendto('s', (UDP_IP, UDP_PORT))
+
+
 ```
