@@ -8,7 +8,7 @@ You can also read feedback data which the device sends every 33 ms (30 Hz).
 
 ## connection diagram:
 
-![alt text](https://github.com/UAEU-IRI/storage/blob/master/figures/handAssist_diagram.svg "robot_1 frames")
+
 
 ## UDP server details:
 - SSID: handAssist
