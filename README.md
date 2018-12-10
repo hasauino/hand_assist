@@ -41,3 +41,4 @@ A UDP client can control the hand by sending characters (1 byte). The following 
 | 'x'           |       stop  motor 2                  |
 | 'z'           |       stop  motor 3                  |
 
+- Python UDP client example: 
