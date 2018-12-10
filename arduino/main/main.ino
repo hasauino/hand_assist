@@ -26,7 +26,7 @@
 #define min_stroke1 20  //percentage
 #define min_stroke2 20  //percentage
 #define min_stroke3 20  //percentage
-
+#define RATE 30.0       //Hz. Rate for printing on serial port
 //Macros
 #define percent2pwm(x) int(x*2.55)
 #define RGB(r,g,b) digitalWrite(RED,r);digitalWrite(GRN,g);digitalWrite(BLU,b);
@@ -40,7 +40,7 @@ union{
 
 SoftwareSerial SSerial(SRX, STX);
 int loop_counter=0;
-unsigned t=0;
+unsigned t=0,t_printing=0;
 //float setpoint[3]={max_stroke1,max_stroke2,max_stroke3};
 float motorPosition[3];
 void setup(){
@@ -80,13 +80,14 @@ if (motorPosition[2]<=min_stroke3 && status3=='b'){motor(3,0); }
 if(   (millis()-t)>rec_blink_delay ){RGB(LOW,LOW,LOW);}
 
  
-//if(loop_counter++ > 100){
-////Serial.print(position(feedback_m1));Serial.print("------");  
-////Serial.print(position(feedback_m2)); Serial.print("------");  
-////Serial.println(position(feedback_m3));
-//Serial.print(motorPosition[2]);Serial.print("---------");Serial.println(status3);
-//loop_counter=0; 
-//}
+if((millis()-t_printing)>(1000.0/RATE)){
+
+Serial.print(motorPosition[0]);Serial.print(",");
+Serial.print(motorPosition[1]);Serial.print(",");
+Serial.print(motorPosition[2]);Serial.print(",");
+Serial.println();
+t_printing=millis();
+}
 
 int rec=SSerial.read();
 
