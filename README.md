@@ -15,7 +15,7 @@ You can also read feedback data which the device sends every 33 ms (30 Hz).
 - IP: 192.168.1.10
 - Port: 80
 
-## Hardware and Soft serial details:
+## Serial details:
 - BaudRate: 115200
 
 ## Serial data (sent to computer on hardware serial) framing details:
