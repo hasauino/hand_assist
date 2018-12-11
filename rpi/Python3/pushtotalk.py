@@ -29,6 +29,7 @@ import grpc
 import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.oauth2.credentials
+from multiprocessing.connection import Listener
 
 from google.assistant.embedded.v1alpha2 import (
     embedded_assistant_pb2,
@@ -241,6 +242,11 @@ def main(api_endpoint, credentials, project_id,
 
         $ python -m googlesamples.assistant -i <input file> -o <output file>
     """
+    
+    address = ('localhost', 6000)     # family is deduced to be 'AF_INET'
+    listener = Listener(address, authkey=b'12345678')
+    conn = listener.accept()
+    
     # Setup logging.
     logging.basicConfig(level=logging.DEBUG if verbose else logging.INFO)
 
@@ -341,6 +347,22 @@ def main(api_endpoint, credentials, project_id,
             logging.info('Turning device on')
         else:
             logging.info('Turning device off')
+            
+    @device_handler.command('Extend')
+    def extend(number):
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+    
+    @device_handler.command('Flex')
+    def extend(number):
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo")      
 
     @device_handler.command('com.example.commands.BlinkLight')
     def blink(speed, number):
@@ -371,7 +393,8 @@ def main(api_endpoint, credentials, project_id,
         wait_for_user_trigger = not once
         while True:
             if wait_for_user_trigger:
-                click.pause(info='Press Enter to send a new request...')
+                conn.recv()
+                #click.pause(info='Press Enter to send a new request...')
             continue_conversation = assistant.assist()
             # wait for user trigger if there is no follow-up turn in
             # the conversation.

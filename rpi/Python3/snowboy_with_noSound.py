@@ -1,9 +1,29 @@
 import snowboydecoder
 import sys
 import signal
+from multiprocessing.connection import Client
+from time import sleep
+
+address = ('localhost', 6000)
+while True:
+    try:
+        conn = Client(address, authkey=b'12345678')
+        break
+    except:
+        sleep(1)
+        print('connecting..')
+        
+        
 
 interrupted = False
 
+
+
+
+def callback():
+    conn.send('y')
+    print('callback')
+    
 
 def signal_handler(signal, frame):
     global interrupted
@@ -11,7 +31,6 @@ def signal_handler(signal, frame):
 
 
 def interrupt_callback():
-    print('inter callback')
     global interrupted
     return interrupted
 
@@ -25,11 +44,11 @@ model = sys.argv[1]
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
-detector = snowboydecoder.HotwordDetector(model, sensitivity=0.6)
+detector = snowboydecoder.HotwordDetector(model, sensitivity=0.5)
 print('Listening... Press Ctrl+C to exit')
 
 # main loop
-detector.start(detected_callback=snowboydecoder.play_audio_file,
+detector.start(detected_callback=callback,
                interrupt_check=interrupt_callback,
                sleep_time=0.03)
 

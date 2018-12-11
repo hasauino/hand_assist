@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """Sample that implements a gRPC client for the Google Assistant API."""
-import serial
+
 import concurrent.futures
 import json
 import logging
@@ -29,9 +29,6 @@ import grpc
 import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.oauth2.credentials
-import snowboydecoder
-import signal
-from time import sleep
 
 from google.assistant.embedded.v1alpha2 import (
     embedded_assistant_pb2,
@@ -60,9 +57,6 @@ CLOSE_MICROPHONE = embedded_assistant_pb2.DialogStateOut.CLOSE_MICROPHONE
 PLAYING = embedded_assistant_pb2.ScreenOutConfig.PLAYING
 DEFAULT_GRPC_DEADLINE = 60 * 3 + 5
 
-ser = serial.Serial('/dev/ttyAMA0',115200)
-
-continue_conversation=False
 
 class SampleAssistant(object):
     """Sample Assistant that supports conversations and device actions.
@@ -131,13 +125,13 @@ class SampleAssistant(object):
         device_actions_futures = []
 
         self.conversation_stream.start_recording()
-        print('Recording audio request.')
+        logging.info('Recording audio request.')
 
         def iter_log_assist_requests():
             for c in self.gen_assist_requests():
                 assistant_helpers.log_assist_request_without_audio(c)
                 yield c
-            print('Reached end of AssistRequest iteration.')
+            logging.debug('Reached end of AssistRequest iteration.')
 
         # This generator yields AssistResponse proto messages
         # received from the gRPC Google Assistant API.
@@ -145,30 +139,30 @@ class SampleAssistant(object):
                                           self.deadline):
             assistant_helpers.log_assist_response_without_audio(resp)
             if resp.event_type == END_OF_UTTERANCE:
-                print('End of audio request detected.')
-                print('Stopping recording.')
+                logging.info('End of audio request detected.')
+                logging.info('Stopping recording.')
                 self.conversation_stream.stop_recording()
             if resp.speech_results:
-                print('Transcript of user request:',
+                logging.info('Transcript of user request: "%s".',
                              ' '.join(r.transcript
                                       for r in resp.speech_results))
             if len(resp.audio_out.audio_data) > 0:
                 if not self.conversation_stream.playing:
                     self.conversation_stream.stop_recording()
                     self.conversation_stream.start_playback()
-                    print('Playing assistant response.')
+                    logging.info('Playing assistant response.')
                 self.conversation_stream.write(resp.audio_out.audio_data)
             if resp.dialog_state_out.conversation_state:
                 conversation_state = resp.dialog_state_out.conversation_state
-                print('Updating conversation state.')
+                logging.debug('Updating conversation state.')
                 self.conversation_state = conversation_state
             if resp.dialog_state_out.volume_percentage != 0:
                 volume_percentage = resp.dialog_state_out.volume_percentage
-                print('Setting volume to %s%%', volume_percentage)
+                logging.info('Setting volume to %s%%', volume_percentage)
                 self.conversation_stream.volume_percentage = volume_percentage
             if resp.dialog_state_out.microphone_mode == DIALOG_FOLLOW_ON:
                 continue_conversation = True
-                print('Expecting follow-on query from user.')
+                logging.info('Expecting follow-on query from user.')
             elif resp.dialog_state_out.microphone_mode == CLOSE_MICROPHONE:
                 continue_conversation = False
             if resp.device_action.device_request_json:
@@ -183,10 +177,10 @@ class SampleAssistant(object):
                 system_browser.display(resp.screen_out.data)
 
         if len(device_actions_futures):
-            print('Waiting for device executions to complete.')
+            logging.info('Waiting for device executions to complete.')
             concurrent.futures.wait(device_actions_futures)
 
-        print('Finished playing assistant response.')
+        logging.info('Finished playing assistant response.')
         self.conversation_stream.stop_playback()
         return continue_conversation
 
@@ -232,7 +226,21 @@ def main(api_endpoint, credentials, project_id,
          lang, display, verbose,audio_sample_rate, audio_sample_width,
          audio_iter_size, audio_block_size, audio_flush_size,
          grpc_deadline, once):
-    
+    """Samples for the Google Assistant API.
+
+    Examples:
+      Run the sample with microphone input and speaker output:
+
+        $ python -m googlesamples.assistant
+
+      Run the sample with file input and speaker output:
+
+        $ python -m googlesamples.assistant -i <input file>
+
+      Run the sample with file input and output:
+
+        $ python -m googlesamples.assistant -i <input file> -o <output file>
+    """
     # Setup logging.
     logging.basicConfig(level=logging.DEBUG if verbose else logging.INFO)
 
@@ -330,24 +338,25 @@ def main(api_endpoint, credentials, project_id,
     @device_handler.command('action.devices.commands.OnOff')
     def onoff(on):
         if on:
-            print('Turning device on')
+            logging.info('Turning device on')
         else:
-            print('Turning device off')
+            logging.info('Turning device off')
             
     @device_handler.command('Extend')
     def extend(number):
-        global ser
-        ser.write(b'f')
-        print("        Extending ...          ") 
-
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
     
     @device_handler.command('Flex')
     def extend(number):
-        global ser
-        ser.write(b'b')
-        print("        Flexing ...          ") 
-        
-        
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo") 
+        print("yoooooooooooooooooooooooooo")      
 
     @device_handler.command('com.example.commands.BlinkLight')
     def blink(speed, number):
@@ -365,66 +374,27 @@ def main(api_endpoint, credentials, project_id,
                          conversation_stream, display,
                          grpc_channel, grpc_deadline,
                          device_handler) as assistant:
+        # If file arguments are supplied:
+        # exit after the first turn of the conversation.
+        if input_audio_file or output_audio_file:
+            assistant.assist()
+            return
 
-       
-        def signal_handler(signal, frame):
-            detector.terminate()
-
-
-        def interrupt_callback():
-            global continue_conversation
-            if continue_conversation:
-                continue_conversation = assistant.assist()
-            print ('listening..')
-
-            
-        def det_call():
-            print('yes master')
-            global continue_conversation
+        # If no file arguments supplied:
+        # keep recording voice requests using the microphone
+        # and playing back assistant response using the speaker.
+        # When the once flag is set, don't wait for a trigger. Otherwise, wait.
+        wait_for_user_trigger = not once
+        while True:
+            if wait_for_user_trigger:
+                click.pause(info='Press Enter to send a new request...')
             continue_conversation = assistant.assist()
-            print('done================')
-            return 0
-        
-        signal.signal(signal.SIGINT, signal_handler)
-        detector = snowboydecoder.HotwordDetector('saaedy.pmdl', sensitivity=0.6)
-        
-        detector.start(detected_callback=det_call,
-               interrupt_check=interrupt_callback,
-               sleep_time=0.1)
-        
+            # wait for user trigger if there is no follow-up turn in
+            # the conversation.
+            wait_for_user_trigger = not continue_conversation
+
+            # If we only want one conversation, break.
+            if once and (not continue_conversation):
+                break
 
 
-
-
-
-
-
-api_endpoint='embeddedassistant.googleapis.com'
-credentials=os.path.join(click.get_app_dir('google-oauthlib-tool'),
-                                   'credentials.json')
-project_id='handassist-581d5'
-device_model_id='handassist-581d5-handassist-jkbpdx'
-device_config=os.path.join(click.get_app_dir('googlesamples-assistant'),
-                  'device_config.json')
-lang='en-US'
-display=False
-verbose=False
-
-audio_sample_rate=audio_helpers.DEFAULT_AUDIO_SAMPLE_RATE
-audio_sample_width=audio_helpers.DEFAULT_AUDIO_SAMPLE_WIDTH
-audio_iter_size=audio_helpers.DEFAULT_AUDIO_ITER_SIZE
-audio_block_size=audio_helpers.DEFAULT_AUDIO_DEVICE_BLOCK_SIZE
-audio_flush_size=audio_helpers.DEFAULT_AUDIO_DEVICE_FLUSH_SIZE
-grpc_deadline=60 * 3 + 5
-once=False
-
-
-
-
-if __name__=="__main__":
-    main(api_endpoint, credentials, project_id,
-             device_model_id, device_config,
-             lang, display, verbose,
-             audio_sample_rate, audio_sample_width,
-             audio_iter_size, audio_block_size, audio_flush_size,
-             grpc_deadline, once)

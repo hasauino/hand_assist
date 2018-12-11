@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from pushtotalk import main
 import click
 import audio_helpers

@@ -24,6 +24,7 @@
                         "open hand",
                         "open han",
                         "han open",
+                        "open",
                         "extend han"
                     ]
                 }
@@ -77,7 +78,8 @@
                         "close fingers",
                         "close hand",
                         "close han",
-                        "han close"
+                        "han close",
+                        "close"
                     ]
                 }
             },
