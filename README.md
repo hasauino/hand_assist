@@ -1,5 +1,8 @@
 This [video](https://www.youtube.com/watch?v=at-r5mfKgaI&t=1s) shows the device in action.
 
+Project link:
+https://hasauino.github.io/projects/2-hand-assist
+
 # handAssist_V3
 - The handAssist device has an Arduino Nano, and an ESP8266 WiFi module.
 - The WiFi module creats a WiFi access point and acts as a UDP server.
